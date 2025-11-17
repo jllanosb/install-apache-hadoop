@@ -352,7 +352,7 @@ Ingresa tu contraseña y continua tu trabajo
 
 - Conectarse a Hadoop con ssh a `WSL`
 ```bash
-ssh hadoop@locahost
+ssh hadoop@172.29.96.93
 ```
 Ingresa tu contraseña y continua tu trabajo
 - Conectarse a Hadoop con ssh a `IP_PUBLICA`
@@ -360,3 +360,6 @@ Ingresa tu contraseña y continua tu trabajo
 ssh hadoop@<IP_PUBLICA>
 ```
 Ingresa tu contraseña y continua tu trabajo
+
+© 2025 Jaime Llanos Bardales.
+Este trabajo está bajo una licencia [Creative Commons Attribution 4.0 Internacional](LICENSE).
