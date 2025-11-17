@@ -102,6 +102,7 @@ Agregar en la linea siguiente:
 ```bash
 JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 ```
+Actualizar Configuración
 ```bash
 source /etc/environment
 ```
@@ -129,7 +130,22 @@ Agregar la línea al final:
 hadoop ALL=(ALL) NOPASSWD:ALL
 ```
 
+# 4. Descargar Hadoop 3.4.2 (última versión estable)
+
 Cambiar al usuario hadoop
 ```bash
 sudo su - hadoop
+```
+
+Versión a instalar Apache Hadoop 3.4.2 version estable. ![Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
+```bash
+cd /tmp
+sudo wget https://downloads.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
+#sudo wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
+sudo mkdir -p /opt/hadoop
+sudo tar -xzf hadoop-3.4.2.tar.gz -C /opt/hadoop --strip-components=1
+```
+Asignar Permisos Propietario
+```bash
+sudo chown -R hadoop:hadoop /opt/hadoop
 ```
