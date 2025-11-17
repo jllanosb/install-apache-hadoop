@@ -168,6 +168,22 @@ Actualizar configuracción
 ```bash
 source ~/.bashrc
 ```
+Verificar configuración:
+```bash
+hadoop version
+echo $HADOOP_HOME
+```
+Resultado:
+```text
+Hadoop 3.4.2
+Source code repository https://github.com/apache/hadoop.git -r 84e8b89ee2ebe6923691205b9e171badde7a495c
+Compiled by ahmarsu on 2025-08-20T10:30Z
+Compiled on platform linux-x86_64
+Compiled with protoc 3.23.4
+From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
+This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.4.2.jar
+/opt/hadoop
+```
 # 6. Configuración Hadoop CORE
 Configurar `core-site.xml`
 ```bash
@@ -218,4 +234,23 @@ Agregar si falla al cargar DataNode
 ```bash
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/namenode
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/datanode
+```
+# 8. Configurar SSH Passwordless
+Generar Clave SSH y Configurar Autenticación sin Contraseña
+```bash
+sudo -u hadoop ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+sudo -u hadoop cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+Inicializar y Habilitar servicio SSH
+```bash
+sudo systemctl start ssh
+sudo systemctl enable ssh
+```
+Verificar conexión SSH
+```bash
+sudo -u hadoop ssh localhost
+```
+Desconectarse
+```bash
+exit
 ```
