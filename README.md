@@ -250,7 +250,47 @@ Verificar conexión SSH
 ```bash
 sudo -u hadoop ssh localhost
 ```
+Resultado:
+```text
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ED25519 key fingerprint is SHA256:EEPNhu6cfdt2SLUZChPrxdtc20oOYAnY94Rp30tGBTQ.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? 
+```
 Desconectarse
 ```bash
 exit
 ```
+Resultado:
+```text
+logout
+Connection to localhost closed.
+```
+# 9. Formatear Namenode (primer arranque)
+```bash
+hdfs namenode -format
+```
+# 10. Inicializar Hadoop
+```bash
+start-dfs.sh
+start-yarn.sh
+```
+Validar servicios:
+```bash
+jps
+```
+Debes ver:
+- NameNode
+- DataNode
+- SecondaryNameNode
+- ResourceManager
+- NodeManager
+
+WebUI:
+Servicio	URL
+NameNode	http://localhost:9870
+WSL NameNode	http://172.29.96.93:9870
+or NameNode	http://IP_PUBLICA:9870
+Resource Manager	http://localhost:8088
+WSL Resource Manager	http://172.29.96.93:8088
+Virtual, VPS or Cloud Resource Manager	http://IP_PUBLICA:8088
