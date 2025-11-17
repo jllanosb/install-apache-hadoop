@@ -113,14 +113,12 @@ javac -version
 echo $JAVA_HOME
 ```
 # 3. Crear usuario enterprise dedicado
-
+En big data enterprise nunca se trabaja con root para servicios Hadoop.
 ```bash
 sudo groupadd hadoop
 sudo useradd -m -g hadoop -s /bin/bash hadoop
 sudo passwd hadoop
 ```
-En big data enterprise nunca se trabaja con root para servicios Hadoop.
-
 Configurar permisos sudo para el usuario hadoop
 ```bash
 sudo visudo
@@ -148,4 +146,76 @@ sudo tar -xzf hadoop-3.4.2.tar.gz -C /opt/hadoop --strip-components=1
 Asignar Permisos Propietario
 ```bash
 sudo chown -R hadoop:hadoop /opt/hadoop
+```
+# 5. Variables de entorno profesionales
+```bash
+sudo -u hadoop nano /home/hadoop/.bashrc
+```
+Agregar al final:
+```bash
+# Apache Hadoop
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export HADOOP_HOME=/opt/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_YARN_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+```
+Actualizar configuracción
+```bash
+source ~/.bashrc
+```
+# 6. Configuración Hadoop CORE
+Configurar `core-site.xml`
+```bash
+sudo -u hadoop nano /opt/hadoop/etc/hadoop/core-site.xml
+```
+Agregar las lineas:
+```bash
+<configuration>
+  <property>
+     <name>fs.defaultFS</name>
+     <value>hdfs://localhost:9000</value>
+  </property>
+</configuration>
+```
+Configurar `hdfs-site.xml`
+```bash
+sudo -u hadoop nano /opt/hadoop/etc/hadoop/hdfs-site.xml
+```
+Agregar las lineas:
+```bash
+<configuration>
+  <property>
+     <name>dfs.replication</name>
+     <value>1</value>
+  </property>
+  <property>
+     <name>dfs.namenode.name.dir</name>
+     <value>file:///opt/hadoop/hadoopdata/namenode</value>
+  </property>
+  <property>
+     <name>dfs.datanode.data.dir</name>
+     <value>file:///opt/hadoop/hadoopdata/datanode</value>
+  </property>
+</configuration>
+```
+Agregar si falla al cargar DataNode
+```bash
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>localhost:9870</value>  <!-- UI port -->
+    </property>
+    <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>localhost:9000</value>  <!-- RPC port -->
+    </property>
+```
+# 7. Crear directorios
+```bash
+sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/namenode
+sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/datanode
 ```
