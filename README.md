@@ -219,7 +219,7 @@ Agregar las lineas:
   </property>
 </configuration>
 ```
-Agregar si falla al cargar DataNode
+### Agregar si y solo si falla al cargar `DataNode`
 ```bash
     <property>
         <name>dfs.namenode.http-address</name>
@@ -246,6 +246,11 @@ Inicializar y Habilitar servicio SSH
 sudo systemctl start ssh
 sudo systemctl enable ssh
 ```
+ Añadir la clave pública a `authorized_keys`
+```bash
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
 Verificar conexión SSH
 ```bash
 sudo -u hadoop ssh localhost
@@ -270,7 +275,7 @@ Connection to localhost closed.
 ```bash
 hdfs namenode -format
 ```
-# 10. Inicializar Hadoop
+# 10. Inicializar Servicios Hadoop
 ```bash
 start-dfs.sh
 start-yarn.sh
@@ -288,9 +293,70 @@ Debes ver:
 
 WebUI:
 Servicio	URL
-NameNode	http://localhost:9870
-WSL NameNode	http://172.29.96.93:9870
-or NameNode	http://IP_PUBLICA:9870
-Resource Manager	http://localhost:8088
-WSL Resource Manager	http://172.29.96.93:8088
-Virtual, VPS or Cloud Resource Manager	http://IP_PUBLICA:8088
+- NameNode	http://localhost:9870
+- Resource Manager	http://localhost:8088
+
+WSL
+- WSL NameNode	http://172.29.96.93:9870
+- WSL Resource Manager	http://172.29.96.93:8088
+
+Virtual, VPS or Cloud
+- NameNode	http://IP_PUBLICA:9870
+- Resource Manager	http://IP_PUBLICA:8088
+
+# 11. Probar HDFS
+```bash
+hdfs dfs -mkdir /input
+hdfs dfs -mkdir /user
+hdfs dfs -mkdir /user/hadoop
+hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml /input
+hdfs dfs -ls /input
+```
+# 12. Ejecutar ejemplo MapReduce
+```bash
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar grep /input /output 'dfs[a-z.]+'
+```
+Ver resultados
+```bash
+hdfs dfs -cat /output/*
+```
+# 13. Ejecutar 2do ejemplo de MapReduce
+Crea un directorio en HDFS:
+```bash
+hdfs dfs -mkdir /user
+hdfs dfs -mkdir /user/hadoop
+```
+Copia un archivo de ejemplo (puedes crear uno):
+```bash
+echo "Probando Funcionamiento de Apache Hadoop v.3.4.2 en Ubuntu 24.04" > input.txt
+hdfs dfs -put input.txt /user/hadoop/
+```
+Verificar que el directorio de salida no exista, sino lo elimina:
+```bash
+hdfs dfs -rm -r /user/hadoop/output
+```
+Ejecuta el ejemplo de WordCount:
+```bash
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar wordcount /user/hadoop/input.txt /user/hadoop/output
+```
+Ver resultados:
+```bash
+hdfs dfs -cat /user/hadoop/output/part-r-00000
+```
+# 14. Accediendo con SSH
+- Conectarse a Hadoop con ssh `localhost`
+```bash
+ssh hadoop@locahost
+```
+Ingresa tu contraseña y continua tu trabajo
+
+- Conectarse a Hadoop con ssh a `WSL`
+```bash
+ssh hadoop@locahost
+```
+Ingresa tu contraseña y continua tu trabajo
+- Conectarse a Hadoop con ssh a `IP_PUBLICA`
+```bash
+ssh hadoop@<IP_PUBLICA>
+```
+Ingresa tu contraseña y continua tu trabajo
