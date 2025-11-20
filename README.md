@@ -53,7 +53,7 @@ Además de sus componentes centrales, Hadoop cuenta con un rico ecosistema:
 - Al menos 20GB de espacio en disco
 - Conexión a Internet
 
-Nota. Si desea usar WSL revisar repositorio ![Instalacion WSL en Windows](https://github.com/jllanosb/Installing-WSL-on-Windows)
+Nota. Si desea usar WSL revisar repositorio [Instalacion WSL en Windows](https://github.com/jllanosb/Install-WSL-on-Windows)
 
 # 1. Preparación del sistema operativo (Ubuntu 24.04 Server o Desktop)
 
@@ -127,8 +127,44 @@ Agregar la línea al final:
 ```bash
 hadoop ALL=(ALL) NOPASSWD:ALL
 ```
+# 4. Configurar SSH
+Generar Clave SSH y Configurar Autenticación sin Contraseña
+```bash
+sudo -u hadoop ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+sudo -u hadoop cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+Inicializar y Habilitar servicio SSH
+```bash
+sudo systemctl start ssh
+sudo systemctl enable ssh
+```
+ Añadir la clave pública a `authorized_keys`
+```bash
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+Verificar conexión SSH
+```bash
+sudo -u hadoop ssh localhost
+```
+Resultado:
+```text
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ED25519 key fingerprint is SHA256:EEPNhu6cfdt2SLUZChPrxdtc20oOYAnY94Rp30tGBTQ.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? 
+```
+Desconectarse
+```bash
+exit
+```
+Resultado:
+```text
+logout
+Connection to localhost closed.
+```
 
-# 4. Descargar Hadoop 3.4.2 (última versión estable)
+# 5. Descargar Hadoop 3.4.2 (última versión estable)
 
 Cambiar al usuario hadoop
 ```bash
@@ -147,7 +183,7 @@ Asignar Permisos Propietario
 ```bash
 sudo chown -R hadoop:hadoop /opt/hadoop
 ```
-# 5. Variables de entorno profesionales
+# 6. Variables de entorno profesionales
 ```bash
 sudo -u hadoop nano /home/hadoop/.bashrc
 ```
@@ -184,7 +220,7 @@ From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
 This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.4.2.jar
 /opt/hadoop
 ```
-# 6. Configuración Hadoop CORE
+# 7. Configuración Hadoop CORE
 Configurar `core-site.xml`
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/core-site.xml
@@ -230,47 +266,12 @@ Agregar las lineas:
         <value>localhost:9000</value>  <!-- RPC port -->
     </property>
 ```
-# 7. Crear directorios
+# 8. Crear directorios
 ```bash
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/namenode
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/datanode
 ```
-# 8. Configurar SSH Passwordless
-Generar Clave SSH y Configurar Autenticación sin Contraseña
-```bash
-sudo -u hadoop ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
-sudo -u hadoop cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-```
-Inicializar y Habilitar servicio SSH
-```bash
-sudo systemctl start ssh
-sudo systemctl enable ssh
-```
- Añadir la clave pública a `authorized_keys`
-```bash
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-```
-Verificar conexión SSH
-```bash
-sudo -u hadoop ssh localhost
-```
-Resultado:
-```text
-The authenticity of host 'localhost (127.0.0.1)' can't be established.
-ED25519 key fingerprint is SHA256:EEPNhu6cfdt2SLUZChPrxdtc20oOYAnY94Rp30tGBTQ.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? 
-```
-Desconectarse
-```bash
-exit
-```
-Resultado:
-```text
-logout
-Connection to localhost closed.
-```
+
 # 9. Formatear Namenode (primer arranque)
 ```bash
 hdfs namenode -format
