@@ -78,7 +78,7 @@ sudo nano /etc/hosts
 Agregar al archivo /etc/hosts:
 
 ```bash
-127.0.0.1 hadoop-master
+# 127.0.0.1 hadoop-master # Habilitar si se tiene IP_Publica
 # 172.29.96.93 del IP Servidor
 172.29.96.93 hadoop-master
 172.29.96.94 hadoop-worker1
