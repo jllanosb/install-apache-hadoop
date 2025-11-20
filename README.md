@@ -169,9 +169,10 @@ Connection to localhost closed.
 Cambiar al usuario hadoop
 ```bash
 sudo su - hadoop
+# su - hadoop
 ```
 
-Versión a instalar Apache Hadoop 3.4.2 version estable. ![Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
+Versión a instalar Apache Hadoop 3.4.2 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
 ```bash
 cd /tmp
 sudo wget https://downloads.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
@@ -363,4 +364,5 @@ ssh hadoop@<IP_PUBLICA>
 Ingresa tu contraseña y continua tu trabajo
 
 © 2025 Jaime Llanos Bardales.
+
 Este trabajo está bajo una licencia [Creative Commons Attribution 4.0 Internacional](LICENSE).
