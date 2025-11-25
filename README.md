@@ -127,7 +127,12 @@ Agregar la línea al final:
 ```bash
 hadoop ALL=(ALL) NOPASSWD:ALL
 ```
-# 4. Configurar SSH
+# 4. Cambiar al usuario hadoop
+```bash
+sudo su - hadoop
+# su - hadoop
+```
+# 5. Configurar SSH
 Generar Clave SSH y Configurar Autenticación sin Contraseña
 ```bash
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
@@ -164,13 +169,7 @@ logout
 Connection to localhost closed.
 ```
 
-# 5. Descargar Hadoop 3.4.2 (última versión estable)
-
-Cambiar al usuario hadoop
-```bash
-sudo su - hadoop
-# su - hadoop
-```
+# 6. Descargar Hadoop 3.4.2 (última versión estable)
 
 Versión a instalar Apache Hadoop 3.4.2 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
 ```bash
@@ -184,7 +183,7 @@ Asignar Permisos Propietario
 ```bash
 sudo chown -R hadoop:hadoop /opt/hadoop
 ```
-# 6. Variables de entorno profesionales
+# 7. Variables de entorno profesionales
 ```bash
 sudo -u hadoop nano /home/hadoop/.bashrc
 ```
@@ -221,7 +220,7 @@ From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
 This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.4.2.jar
 /opt/hadoop
 ```
-# 7. Configuración Hadoop CORE
+# 8. Configuración Hadoop CORE
 Configurar `core-site.xml`
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/core-site.xml
@@ -267,17 +266,17 @@ Agregar las lineas:
         <value>localhost:9000</value>  <!-- RPC port -->
     </property>
 ```
-# 8. Crear directorios
+# 9. Crear directorios
 ```bash
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/namenode
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/datanode
 ```
 
-# 9. Formatear Namenode (primer arranque)
+# 10. Formatear Namenode (primer arranque)
 ```bash
 hdfs namenode -format
 ```
-# 10. Inicializar Servicios Hadoop
+# 11. Inicializar Servicios Hadoop
 ```bash
 start-dfs.sh
 start-yarn.sh
@@ -306,7 +305,7 @@ Virtual, VPS or Cloud
 - NameNode	http://IP_PUBLICA:9870
 - Resource Manager	http://IP_PUBLICA:8088
 
-# 11. Probar HDFS
+# 12. Probar HDFS
 ```bash
 hdfs dfs -mkdir /input
 hdfs dfs -mkdir /user
@@ -314,7 +313,7 @@ hdfs dfs -mkdir /user/hadoop
 hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml /input
 hdfs dfs -ls /input
 ```
-# 12. Ejecutar ejemplo MapReduce
+# 13. Ejecutar ejemplo MapReduce
 ```bash
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar grep /input /output 'dfs[a-z.]+'
 ```
@@ -322,7 +321,7 @@ Ver resultados
 ```bash
 hdfs dfs -cat /output/*
 ```
-# 13. Ejecutar 2do ejemplo de MapReduce
+# 14. Ejecutar 2do ejemplo de MapReduce
 Crea un directorio en HDFS:
 ```bash
 hdfs dfs -mkdir /user
@@ -345,7 +344,7 @@ Ver resultados:
 ```bash
 hdfs dfs -cat /user/hadoop/output/part-r-00000
 ```
-# 14. Accediendo con SSH
+# 15. Accediendo con SSH
 - Conectarse a Hadoop con ssh `localhost`
 ```bash
 ssh hadoop@locahost
