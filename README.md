@@ -130,18 +130,18 @@ hadoop ALL=(ALL) NOPASSWD:ALL
 # 4. Configurar SSH
 Generar Clave SSH y Configurar Autenticación sin Contraseña
 ```bash
-sudo -u hadoop ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
-sudo -u hadoop cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
 ```
 Inicializar y Habilitar servicio SSH
 ```bash
 sudo systemctl start ssh
 sudo systemctl enable ssh
 ```
- Añadir la clave pública a `authorized_keys`
+Verificar el funcionamiento de SSH:
 ```bash
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
+sudo service ssh start
 ```
 Verificar conexión SSH
 ```bash
