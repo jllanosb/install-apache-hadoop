@@ -133,6 +133,13 @@ sudo su - hadoop
 # su - hadoop
 ```
 # 5. Configurar SSH
+
+Actualizar e instalar paquetes
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install ssh openssh-server
+```
+
 Generar Clave SSH y Configurar Autenticación sin Contraseña
 ```bash
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
