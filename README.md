@@ -232,22 +232,22 @@ Configurar `core-site.xml`
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/core-site.xml
 ```
-Agregar las lineas:
+Agregar las lineas dentro de `<configuration>`:
 ```bash
-<configuration>
+
   <property>
      <name>fs.defaultFS</name>
      <value>hdfs://localhost:9000</value>
   </property>
-</configuration>
+
 ```
 Configurar `hdfs-site.xml`
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/hdfs-site.xml
 ```
-Agregar las lineas:
+Agregar las lineas dentro de `<configuration>`:
 ```bash
-<configuration>
+
   <property>
      <name>dfs.replication</name>
      <value>1</value>
@@ -260,7 +260,7 @@ Agregar las lineas:
      <name>dfs.datanode.data.dir</name>
      <value>file:///opt/hadoop/hadoopdata/datanode</value>
   </property>
-</configuration>
+
 ```
 ### Agregar si y solo si falla al cargar `DataNode`
 ```bash
@@ -363,7 +363,7 @@ Ingresa tu contraseña y continua tu trabajo
 ssh hadoop@172.29.96.93
 ```
 Ingresa tu contraseña y continua tu trabajo
-- Conectarse a Hadoop con ssh a `IP_PUBLICA`
+- Conectarse a Hadoop con ssh e `IP_PUBLICA`
 ```bash
 ssh hadoop@<IP_PUBLICA>
 ```
