@@ -233,7 +233,7 @@ Configurar `core-site.xml`
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/core-site.xml
 ```
 Agregar las lineas dentro de `<configuration>`:
-```bash
+```xml
 
   <property>
      <name>fs.defaultFS</name>
@@ -246,7 +246,7 @@ Configurar `hdfs-site.xml`
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/hdfs-site.xml
 ```
 Agregar las lineas dentro de `<configuration>`:
-```bash
+```xml
 
   <property>
      <name>dfs.replication</name>
@@ -263,7 +263,7 @@ Agregar las lineas dentro de `<configuration>`:
 
 ```
 ### Agregar si y solo si falla al cargar `DataNode`
-```bash
+```xml
     <property>
         <name>dfs.namenode.http-address</name>
         <value>localhost:9870</value>  <!-- UI port -->
@@ -273,17 +273,64 @@ Agregar las lineas dentro de `<configuration>`:
         <value>localhost:9000</value>  <!-- RPC port -->
     </property>
 ```
-# 9. Crear directorios
+
+# 9. Editar mapred-site.xml 
+Configurar `mapred-site.xml`
+```bash
+sudo -u hadoop nano /opt/hadoop/etc/hadoop/mapred-site.xml
+```
+Agregar las lineas dentro de `<configuration>`:
+```xml
+
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+    <property>
+        <name>mapreduce.application.classpath</name>
+        <value>$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value>
+    </property>
+
+```
+
+# 10. Editar yarn-site.xml
+Configurar `yarn-site.xml`
+```bash
+sudo -u hadoop nano /opt/hadoop/etc/hadoop/yarn-site.xml
+```
+Agrega Dentro de las etiquetas < configuration >...</ configuration >:
+```xml
+
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.env-whitelist</name>
+        <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_HOME,PATH,LANG,TZ,HADOOP_MAPRED_HOME</value>
+    </property>
+    <!-- Habilitar estas lineas cuando trabajen con IP_PUBLICA-->
+    <!--property>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>0.0.0.0:8088</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.webapp.address</name>
+        <value>0.0.0.0:8042</value>
+    </property-->
+
+```
+# 11. Crear directorios
 ```bash
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/namenode
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/datanode
 ```
 
-# 10. Formatear Namenode (primer arranque)
+# 12. Formatear Namenode (primer arranque)
 ```bash
 hdfs namenode -format
 ```
-# 11. Inicializar Servicios Hadoop
+# 13. Inicializar Servicios Hadoop
 ```bash
 start-dfs.sh
 start-yarn.sh
@@ -312,7 +359,7 @@ Virtual, VPS or Cloud
 - NameNode	http://IP_PUBLICA:9870
 - Resource Manager	http://IP_PUBLICA:8088
 
-# 12. Probar HDFS
+# 14. Probar HDFS
 ```bash
 hdfs dfs -mkdir /input
 hdfs dfs -mkdir /user
@@ -320,7 +367,7 @@ hdfs dfs -mkdir /user/hadoop
 hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml /input
 hdfs dfs -ls /input
 ```
-# 13. Ejecutar ejemplo MapReduce
+# 15. Ejecutar ejemplo MapReduce
 ```bash
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar grep /input /output 'dfs[a-z.]+'
 ```
@@ -328,7 +375,7 @@ Ver resultados
 ```bash
 hdfs dfs -cat /output/*
 ```
-# 14. Ejecutar 2do ejemplo de MapReduce
+# 16. Ejecutar 2do ejemplo de MapReduce
 Crea un directorio en HDFS:
 ```bash
 hdfs dfs -mkdir /user
@@ -336,7 +383,7 @@ hdfs dfs -mkdir /user/hadoop
 ```
 Copia un archivo de ejemplo (puedes crear uno):
 ```bash
-echo "Probando Funcionamiento de Apache Hadoop v.3.4.2 en Ubuntu 24.04" > input.txt
+echo "Probando el Funcionamiento de Apache Hadoop version v.3.4.2 en Ubuntu 24.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 25.01.2026" > input.txt
 hdfs dfs -put input.txt /user/hadoop/
 ```
 Verificar que el directorio de salida no exista, sino lo elimina:
@@ -351,7 +398,30 @@ Ver resultados:
 ```bash
 hdfs dfs -cat /user/hadoop/output/part-r-00000
 ```
-# 15. Accediendo con SSH
+Entonces el resultado será:
+```
+2       1
+24.04   1
+25.01.2026      1
+Apache  1
+Bardales        1
+Funcionamiento  1
+Hadoop  1
+Jaime   1
+Llanos  1
+Probando        1
+Ubuntu  1
+WSL     1
+Windows 1
+de      2
+el      1
+en      2
+instalado       1
+v.3.4.2 1
+version 1
+```
+
+# 17. Accediendo con SSH
 - Conectarse a Hadoop con ssh `localhost`
 ```bash
 ssh hadoop@locahost
