@@ -54,15 +54,15 @@ Además de sus componentes centrales, Hadoop cuenta con un rico ecosistema:
 
 ## Requisitos Previos
 
-- Ubuntu 24.04 instalado (WSL - Virtualizado - Computador con OS)
+- Ubuntu 26.04 instalado (WSL - Virtualizado - Computador con OS)
 - Usuario con privilegios sudo
-- Mínimo 4GB de RAM
-- Al menos 20GB de espacio en disco
+- Mínimo 4 GB de RAM
+- Al menos 20 GB de espacio en disco
 - Conexión a Internet
 
 Nota. Si desea usar WSL revisar repositorio [Instalacion WSL en Windows](https://github.com/jllanosb/Install-WSL-on-Windows)
 
-# 1. Preparación del sistema operativo (Ubuntu 24.04 Server o Desktop)
+# 1. Preparación del sistema operativo (Ubuntu 26.04 Server o Desktop)
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -555,6 +555,6 @@ ssh hadoop@<IP_PUBLICA>
 
 Ingresa tu contraseña y continua tu trabajo
 
-© 2025 Jaime Llanos Bardales.
+© 2026 Jaime Llanos Bardales.
 
 Este trabajo está bajo una licencia [Creative Commons Attribution 4.0 Internacional](LICENSE).
