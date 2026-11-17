@@ -1,40 +1,47 @@
-# INSTALACIÓN APACHE HADOOP 3.4.2 EN UBUNTU 24.04
+# INSTALACIÓN APACHE HADOOP 3.5.0 EN UBUNTU 26.04
 
 Apache Hadoop es un marco de trabajo (framework) de código abierto diseñado para el almacenamiento distribuido y el procesamiento de grandes volúmenes de datos (Big Data) en clústeres de computadoras. Está construido para escalar desde un solo servidor hasta miles de máquinas, cada una con almacenamiento y capacidad de cómputo local.
 
-## Componentes Principales 
-### 1. HDFS (Hadoop Distributed File System) 
+## Componentes Principales
+
+### 1. HDFS (Hadoop Distributed File System)
 
 #### Propósito: Sistema de archivos distribuido.
+
 Características:
+
 - Tolerante a fallos y altamente disponible.
 - Almacena datos en bloques (típicamente de 128 MB en Hadoop 2+).
 - Replica los datos (por defecto, 3 copias) en diferentes nodos para evitar pérdidas.
 
-### 2. MapReduce 
+### 2. MapReduce
 
 #### Propósito: Modelo de programación para procesamiento distribuido.
+
 Fases:
+
 - Map: Procesa los datos de entrada y genera pares clave-valor.
 - Reduce: Combina los resultados del map para producir la salida final.
 
 Ideal para: Procesamiento por lotes (batch processing), no para tiempo real.
 
-### 3. YARN (Yet Another Resource Negotiator) 
+### 3. YARN (Yet Another Resource Negotiator)
 
 #### Propósito: Gestiona recursos y programa tareas en el clúster.
+
 Componentes:
+
 - ResourceManager: Coordinador central de recursos.
 - NodeManager: Gestiona recursos en cada nodo.
 - ApplicationMaster: Supervisa la ejecución de cada aplicación.
 
-### 4. Hadoop Common 
+### 4. Hadoop Common
 
 Bibliotecas y utilidades compartidas por todos los módulos.
 
-## Ecosistema de Hadoop 
+## Ecosistema de Hadoop
 
-Además de sus componentes centrales, Hadoop cuenta con un rico ecosistema: 
+Además de sus componentes centrales, Hadoop cuenta con un rico ecosistema:
 
 - Hive: Permite consultar datos con un lenguaje similar a SQL.
 - Pig: Lenguaje de alto nivel para flujos de datos.
@@ -61,20 +68,27 @@ Nota. Si desea usar WSL revisar repositorio [Instalacion WSL en Windows](https:/
 sudo apt update && sudo apt upgrade -y
 sudo apt install ssh rsync openssh-server openssh-client pdsh net-tools vim curl wget tar git -y
 ```
+
 Verificar IP Servidor
+
 ```bash
 ifconfig
 ```
+
 Visualiza algo `inet` como:
+
 ```text
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 172.29.96.93
 ```
+
 Configurar hostname y hosts
+
 ```bash
 sudo hostnamectl set-hostname hadoop-master
 sudo nano /etc/hosts
 ```
+
 Agregar al archivo /etc/hosts:
 
 ```bash
@@ -86,91 +100,124 @@ Agregar al archivo /etc/hosts:
 # 192.168.1.100 hadoop-master # Servidor Virtualizado Virtualbox, Vmware, otro.
 # IP_Publica hadoop-master # VPS, VPC, Cloud
 ```
+
 # 2. Instalación de Java 11 LTS
 
-Hive productivo 3.1.x / 4 RC estable → Java 11 es estándar.
+Hive productivo 4.1.x / 4 RC estable → Java 17 es estándar.
+
 ```bash
-sudo apt install openjdk-11-jdk -y
+sudo apt install openjdk-17-jdk -y
 java -version
 ```
 
 Configurar variables de entorno Java
+
 ```bash
 sudo nano /etc/environment
 ```
+
 Agregar en la linea siguiente:
+
 ```bash
-JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 ```
+
 Actualizar Configuración
+
 ```bash
 source /etc/environment
 ```
+
 Verificar instalación
+
 ```bash
 java -version
 javac -version
 echo $JAVA_HOME
 ```
+
 # 3. Crear usuario enterprise dedicado
+
 En big data enterprise nunca se trabaja con root para servicios Hadoop.
+
 ```bash
 sudo groupadd hadoop
 sudo useradd -m -g hadoop -s /bin/bash hadoop
 sudo passwd hadoop
 ```
+
 Configurar permisos sudo para el usuario hadoop
+
 ```bash
 sudo visudo
 ```
+
 Agregar la línea al final:
+
 ```bash
 hadoop ALL=(ALL) NOPASSWD:ALL
 ```
+
 # 4. Cambiar al usuario hadoop
+
 ```bash
 sudo su - hadoop
 # su - hadoop
 ```
+
 # 5. Configurar SSH
 
 Actualizar e instalar paquetes
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install ssh openssh-server
 ```
 
 Generar Clave SSH y Configurar Autenticación sin Contraseña
+
 ```bash
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 0600 ~/.ssh/authorized_keys
 ```
+
 Inicializar y Habilitar servicio SSH
+
 ```bash
 sudo systemctl start ssh
 sudo systemctl enable ssh
 ```
+
 Verificar el funcionamiento de SSH:
+
 ```bash
 sudo service ssh start
 ```
+
 Verificar conexión SSH
+
 ```bash
 sudo -u hadoop ssh localhost
 ```
+
 Resultado:
+
 ```text
 The authenticity of host 'localhost (127.0.0.1)' can't be established.
 ED25519 key fingerprint is SHA256:EEPNhu6cfdt2SLUZChPrxdtc20oOYAnY94Rp30tGBTQ.
 This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? 
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
+
 Desconectarse
+
 ```bash
 exit
 ```
+
 Resultado:
+
 ```text
 logout
 Connection to localhost closed.
@@ -178,26 +225,32 @@ Connection to localhost closed.
 
 # 6. Descargar Hadoop 3.4.2 (última versión estable)
 
-Versión a instalar Apache Hadoop 3.4.2 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
+Versión a instalar Apache Hadoop 3.5.0 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
+
 ```bash
 cd /tmp
-sudo wget https://downloads.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
-#sudo wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
+sudo wget https://downloads.apache.org/hadoop/common/hadoop-3.5.0/hadoop-3.5.0.tar.gz
 sudo mkdir -p /opt/hadoop
-sudo tar -xzf hadoop-3.4.2.tar.gz -C /opt/hadoop --strip-components=1
+sudo tar -xzf hadoop-3.5.0.tar.gz -C /opt/hadoop --strip-components=1
 ```
+
 Asignar Permisos Propietario
+
 ```bash
 sudo chown -R hadoop:hadoop /opt/hadoop
 ```
+
 # 7. Variables de entorno profesionales
+
 ```bash
 sudo -u hadoop nano /home/hadoop/.bashrc
 ```
+
 Agregar al final:
+
 ```bash
 # Apache Hadoop
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export HADOOP_HOME=/opt/hadoop
 export HADOOP_INSTALL=$HADOOP_HOME
 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
@@ -207,32 +260,43 @@ export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_YARN_HOME=$HADOOP_HOME
 export YARN_HOME=$HADOOP_HOME
 ```
+
 Actualizar configuracción
+
 ```bash
 source ~/.bashrc
 ```
+
 Verificar configuración:
+
 ```bash
 hadoop version
 echo $HADOOP_HOME
 ```
+
 Resultado:
+
 ```text
-Hadoop 3.4.2
+Hadoop 3.5.0
 Source code repository https://github.com/apache/hadoop.git -r 84e8b89ee2ebe6923691205b9e171badde7a495c
 Compiled by ahmarsu on 2025-08-20T10:30Z
 Compiled on platform linux-x86_64
 Compiled with protoc 3.23.4
 From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
-This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.4.2.jar
+This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.5.0.jar
 /opt/hadoop
 ```
+
 # 8. Configuración Hadoop CORE
+
 Configurar `core-site.xml`
+
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/core-site.xml
 ```
+
 Agregar las lineas dentro de `<configuration>`:
+
 ```xml
 
   <property>
@@ -241,11 +305,15 @@ Agregar las lineas dentro de `<configuration>`:
   </property>
 
 ```
+
 Configurar `hdfs-site.xml`
+
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/hdfs-site.xml
 ```
+
 Agregar las lineas dentro de `<configuration>`:
+
 ```xml
 
   <property>
@@ -262,7 +330,9 @@ Agregar las lineas dentro de `<configuration>`:
   </property>
 
 ```
+
 ### Agregar si y solo si falla al cargar `DataNode`
+
 ```xml
     <property>
         <name>dfs.namenode.http-address</name>
@@ -274,12 +344,16 @@ Agregar las lineas dentro de `<configuration>`:
     </property>
 ```
 
-# 9. Editar mapred-site.xml 
+# 9. Editar mapred-site.xml
+
 Configurar `mapred-site.xml`
+
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/mapred-site.xml
 ```
+
 Agregar las lineas dentro de `<configuration>`:
+
 ```xml
 
     <property>
@@ -294,11 +368,15 @@ Agregar las lineas dentro de `<configuration>`:
 ```
 
 # 10. Editar yarn-site.xml
+
 Configurar `yarn-site.xml`
+
 ```bash
 sudo -u hadoop nano /opt/hadoop/etc/hadoop/yarn-site.xml
 ```
+
 Agrega Dentro de las etiquetas < configuration >...</ configuration >:
+
 ```xml
 
     <property>
@@ -320,26 +398,35 @@ Agrega Dentro de las etiquetas < configuration >...</ configuration >:
     </property-->
 
 ```
+
 # 11. Crear directorios
+
 ```bash
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/namenode
 sudo -u hadoop mkdir -p /opt/hadoop/hadoopdata/datanode
 ```
 
 # 12. Formatear Namenode (primer arranque)
+
 ```bash
 hdfs namenode -format
 ```
+
 # 13. Inicializar Servicios Hadoop
+
 ```bash
 start-dfs.sh
 start-yarn.sh
 ```
+
 Validar servicios:
+
 ```bash
 jps
 ```
+
 Debes ver:
+
 - NameNode
 - DataNode
 - SecondaryNameNode
@@ -347,19 +434,23 @@ Debes ver:
 - NodeManager
 
 WebUI:
-Servicio	URL
-- NameNode	http://localhost:9870
-- Resource Manager	http://localhost:8088
+Servicio URL
+
+- NameNode http://localhost:9870
+- Resource Manager http://localhost:8088
 
 WSL
-- WSL NameNode	http://172.29.96.93:9870
-- WSL Resource Manager	http://172.29.96.93:8088
+
+- WSL NameNode http://172.29.96.93:9870
+- WSL Resource Manager http://172.29.96.93:8088
 
 Virtual, VPS or Cloud
-- NameNode	http://IP_PUBLICA:9870
-- Resource Manager	http://IP_PUBLICA:8088
+
+- NameNode http://IP_PUBLICA:9870
+- Resource Manager http://IP_PUBLICA:8088
 
 # 14. Probar HDFS
+
 ```bash
 hdfs dfs -mkdir /input
 hdfs dfs -mkdir /user
@@ -367,42 +458,59 @@ hdfs dfs -mkdir /user/hadoop
 hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml /input
 hdfs dfs -ls /input
 ```
+
 # 15. Ejecutar ejemplo MapReduce
+
 ```bash
-hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar grep /input /output 'dfs[a-z.]+'
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.5.0.jar grep /input /output 'dfs[a-z.]+'
 ```
+
 Ver resultados
+
 ```bash
 hdfs dfs -cat /output/*
 ```
+
 # 16. Ejecutar 2do ejemplo de MapReduce
+
 Crea un directorio en HDFS:
+
 ```bash
 hdfs dfs -mkdir /user
 hdfs dfs -mkdir /user/hadoop
 ```
+
 Copia un archivo de ejemplo (puedes crear uno):
+
 ```bash
-echo "Probando el Funcionamiento de Apache Hadoop version v.3.4.2 en Ubuntu 24.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 25.01.2026" > input.txt
+echo "Probando el Funcionamiento de Apache Hadoop version v.3.5.0 en Ubuntu 26.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 16.11.2026" > input.txt
 hdfs dfs -put input.txt /user/hadoop/
 ```
+
 Verificar que el directorio de salida no exista, sino lo elimina:
+
 ```bash
 hdfs dfs -rm -r /user/hadoop/output
 ```
+
 Ejecuta el ejemplo de WordCount:
+
 ```bash
-hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar wordcount /user/hadoop/input.txt /user/hadoop/output
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.5.0.jar wordcount /user/hadoop/input.txt /user/hadoop/output
 ```
+
 Ver resultados:
+
 ```bash
 hdfs dfs -cat /user/hadoop/output/part-r-00000
 ```
+
 Entonces el resultado será:
+
 ```
 2       1
-24.04   1
-25.01.2026      1
+26.04   1
+16.11.2026      1
 Apache  1
 Bardales        1
 Funcionamiento  1
@@ -417,26 +525,34 @@ de      2
 el      1
 en      2
 instalado       1
-v.3.4.2 1
+v.3.5.0 1
 version 1
 ```
 
 # 17. Accediendo con SSH
+
 - Conectarse a Hadoop con ssh `localhost`
+
 ```bash
 ssh hadoop@locahost
 ```
+
 Ingresa tu contraseña y continua tu trabajo
 
 - Conectarse a Hadoop con ssh a `WSL`
+
 ```bash
 ssh hadoop@172.29.96.93
 ```
+
 Ingresa tu contraseña y continua tu trabajo
+
 - Conectarse a Hadoop con ssh e `IP_PUBLICA`
+
 ```bash
 ssh hadoop@<IP_PUBLICA>
 ```
+
 Ingresa tu contraseña y continua tu trabajo
 
 © 2025 Jaime Llanos Bardales.
