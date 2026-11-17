@@ -54,10 +54,10 @@ Además de sus componentes centrales, Hadoop cuenta con un rico ecosistema:
 
 ## Requisitos Previos
 
-- Ubuntu 24.04 instalado (WSL - Virtualizado - Computador con OS)
+- Ubuntu 26.04 instalado (WSL - Virtualizado - Computador con OS)
 - Usuario con privilegios sudo
-- Mínimo 4GB de RAM
-- Al menos 20GB de espacio en disco
+- Mínimo 4 GB de RAM
+- Al menos 20 GB de espacio en disco
 - Conexión a Internet
 
 Nota. Si desea usar WSL revisar repositorio [Instalacion WSL en Windows](https://github.com/jllanosb/Install-WSL-on-Windows)
@@ -223,7 +223,7 @@ logout
 Connection to localhost closed.
 ```
 
-# 6. Descargar Hadoop 3.4.2 (última versión estable)
+# 6. Descargar Hadoop 3.5.0 (última versión estable)
 
 Versión a instalar Apache Hadoop 3.5.0 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
 
@@ -278,11 +278,11 @@ Resultado:
 
 ```text
 Hadoop 3.5.0
-Source code repository https://github.com/apache/hadoop.git -r 84e8b89ee2ebe6923691205b9e171badde7a495c
-Compiled by ahmarsu on 2025-08-20T10:30Z
+Source code repository https://github.com/apache/hadoop.git -r dbcc7cd797100e6b32cd84f85b53a5193a5f9af0
+Compiled by cnauroth on 2026-03-24T16:56Z
 Compiled on platform linux-x86_64
-Compiled with protoc 3.23.4
-From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
+Compiled with protoc 3.25.5
+From source with checksum 64582ed0a62a169c39a19c734a8f33b5
 This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.5.0.jar
 /opt/hadoop
 ```
@@ -555,6 +555,6 @@ ssh hadoop@<IP_PUBLICA>
 
 Ingresa tu contraseña y continua tu trabajo
 
-© 2025 Jaime Llanos Bardales.
+© 2026 Jaime Llanos Bardales.
 
 Este trabajo está bajo una licencia [Creative Commons Attribution 4.0 Internacional](LICENSE).
