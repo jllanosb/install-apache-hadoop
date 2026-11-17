@@ -1,4 +1,4 @@
-# INSTALACIÓN APACHE HADOOP 3.5.0 EN UBUNTU 26.04
+# INSTALACIÓN APACHE HADOOP 3.4.2 EN UBUNTU 24.04
 
 Apache Hadoop es un marco de trabajo (framework) de código abierto diseñado para el almacenamiento distribuido y el procesamiento de grandes volúmenes de datos (Big Data) en clústeres de computadoras. Está construido para escalar desde un solo servidor hasta miles de máquinas, cada una con almacenamiento y capacidad de cómputo local.
 
@@ -103,10 +103,10 @@ Agregar al archivo /etc/hosts:
 
 # 2. Instalación de Java 11 LTS
 
-Hive productivo 4.1.x / 4 RC estable → Java 17 es estándar.
+Hive productivo 3.1.x / 4 RC estable → Java 11 es estándar.
 
 ```bash
-sudo apt install openjdk-17-jdk -y
+sudo apt install openjdk-11-jdk -y
 java -version
 ```
 
@@ -119,7 +119,7 @@ sudo nano /etc/environment
 Agregar en la linea siguiente:
 
 ```bash
-JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 ```
 
 Actualizar Configuración
@@ -225,13 +225,14 @@ Connection to localhost closed.
 
 # 6. Descargar Hadoop 3.4.2 (última versión estable)
 
-Versión a instalar Apache Hadoop 3.5.0 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
+Versión a instalar Apache Hadoop 3.4.2 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
 
 ```bash
 cd /tmp
-sudo wget https://downloads.apache.org/hadoop/common/hadoop-3.5.0/hadoop-3.5.0.tar.gz
+sudo wget https://downloads.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
+#sudo wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.2/hadoop-3.4.2.tar.gz
 sudo mkdir -p /opt/hadoop
-sudo tar -xzf hadoop-3.5.0.tar.gz -C /opt/hadoop --strip-components=1
+sudo tar -xzf hadoop-3.4.2.tar.gz -C /opt/hadoop --strip-components=1
 ```
 
 Asignar Permisos Propietario
@@ -250,7 +251,7 @@ Agregar al final:
 
 ```bash
 # Apache Hadoop
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export HADOOP_HOME=/opt/hadoop
 export HADOOP_INSTALL=$HADOOP_HOME
 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
@@ -277,13 +278,13 @@ echo $HADOOP_HOME
 Resultado:
 
 ```text
-Hadoop 3.5.0
+Hadoop 3.4.2
 Source code repository https://github.com/apache/hadoop.git -r 84e8b89ee2ebe6923691205b9e171badde7a495c
 Compiled by ahmarsu on 2025-08-20T10:30Z
 Compiled on platform linux-x86_64
 Compiled with protoc 3.23.4
 From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
-This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.5.0.jar
+This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.4.2.jar
 /opt/hadoop
 ```
 
@@ -462,7 +463,7 @@ hdfs dfs -ls /input
 # 15. Ejecutar ejemplo MapReduce
 
 ```bash
-hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.5.0.jar grep /input /output 'dfs[a-z.]+'
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar grep /input /output 'dfs[a-z.]+'
 ```
 
 Ver resultados
@@ -483,7 +484,7 @@ hdfs dfs -mkdir /user/hadoop
 Copia un archivo de ejemplo (puedes crear uno):
 
 ```bash
-echo "Probando el Funcionamiento de Apache Hadoop version v.3.5.0 en Ubuntu 26.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 16.11.2026" > input.txt
+echo "Probando el Funcionamiento de Apache Hadoop version v.3.4.2 en Ubuntu 24.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 25.01.2026" > input.txt
 hdfs dfs -put input.txt /user/hadoop/
 ```
 
@@ -496,7 +497,7 @@ hdfs dfs -rm -r /user/hadoop/output
 Ejecuta el ejemplo de WordCount:
 
 ```bash
-hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.5.0.jar wordcount /user/hadoop/input.txt /user/hadoop/output
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.2.jar wordcount /user/hadoop/input.txt /user/hadoop/output
 ```
 
 Ver resultados:
@@ -509,8 +510,8 @@ Entonces el resultado será:
 
 ```
 2       1
-26.04   1
-16.11.2026      1
+24.04   1
+25.01.2026      1
 Apache  1
 Bardales        1
 Funcionamiento  1
@@ -525,7 +526,7 @@ de      2
 el      1
 en      2
 instalado       1
-v.3.5.0 1
+v.3.4.2 1
 version 1
 ```
 
