@@ -101,7 +101,7 @@ Agregar al archivo /etc/hosts:
 # IP_Publica hadoop-master # VPS, VPC, Cloud
 ```
 
-# 2. Instalación de Java 11 LTS
+# 2. Instalación de Java 17 LTS
 
 Hive productivo 4.1.x / 4 RC estable → Java 17 es estándar.
 
@@ -223,7 +223,7 @@ logout
 Connection to localhost closed.
 ```
 
-# 6. Descargar Hadoop 3.4.2 (última versión estable)
+# 6. Descargar Hadoop 3.5.0 (última versión estable)
 
 Versión a instalar Apache Hadoop 3.5.0 version estable. [Revisar nuevas Versiones](https://hadoop.apache.org/releases.html)
 
