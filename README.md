@@ -62,7 +62,7 @@ Además de sus componentes centrales, Hadoop cuenta con un rico ecosistema:
 
 Nota. Si desea usar WSL revisar repositorio [Instalacion WSL en Windows](https://github.com/jllanosb/Install-WSL-on-Windows)
 
-# 1. Preparación del sistema operativo (Ubuntu 24.04 Server o Desktop)
+# 1. Preparación del sistema operativo (Ubuntu 26.04 Server o Desktop)
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -101,7 +101,7 @@ Agregar al archivo /etc/hosts:
 # IP_Publica hadoop-master # VPS, VPC, Cloud
 ```
 
-# 2. Instalación de Java 11 LTS
+# 2. Instalación de Java 17 LTS
 
 Hive productivo 4.1.x / 4 RC estable → Java 17 es estándar.
 
@@ -278,11 +278,11 @@ Resultado:
 
 ```text
 Hadoop 3.5.0
-Source code repository https://github.com/apache/hadoop.git -r dbcc7cd797100e6b32cd84f85b53a5193a5f9af0
-Compiled by cnauroth on 2026-03-24T16:56Z
+Source code repository https://github.com/apache/hadoop.git -r 84e8b89ee2ebe6923691205b9e171badde7a495c
+Compiled by ahmarsu on 2025-08-20T10:30Z
 Compiled on platform linux-x86_64
-Compiled with protoc 3.25.5
-From source with checksum 64582ed0a62a169c39a19c734a8f33b5
+Compiled with protoc 3.23.4
+From source with checksum fa94c67d4b4be021b9e9515c9b0f7b6
 This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.5.0.jar
 /opt/hadoop
 ```
