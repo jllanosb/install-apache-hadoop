@@ -101,12 +101,12 @@ Agregar al archivo /etc/hosts:
 # IP_Publica hadoop-master # VPS, VPC, Cloud
 ```
 
-# 2. Instalación de Java 17 LTS
+# 2. Instalación de Java 21 LTS
 
-Hive productivo 4.1.x / 4 RC estable → Java 17 es estándar.
+Hadoop productivo 3.5.x / 4 RC estable → Java 21 es estándar.
 
 ```bash
-sudo apt install openjdk-17-jdk -y
+sudo apt install openjdk-21-jdk -y
 java -version
 ```
 
@@ -119,7 +119,7 @@ sudo nano /etc/environment
 Agregar en la linea siguiente:
 
 ```bash
-JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
 ```
 
 Actualizar Configuración
@@ -249,8 +249,9 @@ sudo -u hadoop nano /home/hadoop/.bashrc
 Agregar al final:
 
 ```bash
+
 # Apache Hadoop
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 export HADOOP_HOME=/opt/hadoop
 export HADOOP_INSTALL=$HADOOP_HOME
 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
@@ -483,7 +484,7 @@ hdfs dfs -mkdir /user/hadoop
 Copia un archivo de ejemplo (puedes crear uno):
 
 ```bash
-echo "Probando el Funcionamiento de Apache Hadoop version v.3.5.0 en Ubuntu 26.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 16.11.2026" > input.txt
+echo "Probando el Funcionamiento de Apache Hadoop version v.3.5.0 en Ubuntu 26.04 instalado en WSL 2 de Windows Jaime Llanos Bardales 18.11.2026" > input.txt
 hdfs dfs -put input.txt /user/hadoop/
 ```
 
